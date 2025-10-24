@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Batch Calling Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    async function loadBatches() {
+      const res = await fetch('/api/batch/list');
+      const data = await res.json();
+      const tbody = document.getElementById('batch-tbody');
+      tbody.innerHTML = '';
+      data.batches.forEach(b => {
+        const tr = document.createElement('tr');
+        tr.className = 'border-b';
+        tr.innerHTML = `
+          <td class="p-2">${b.batch_id}</td>
+          <td class="p-2">${b.name}</td>
+          <td class="p-2"><span class="px-2 py-1 rounded text-sm ${statusColor(b.status)}">${b.status}</span></td>
+          <td class="p-2">${b.total_calls}</td>
+          <td class="p-2 text-green-600">${b.successful_calls}</td>
+          <td class="p-2 text-red-600">${b.failed_calls}</td>
+          <td class="p-2">${new Date(b.created_at).toLocaleString()}</td>
+          <td class="p-2 space-x-1">
+            <button onclick="viewBatch('${b.batch_id}')" class="text-blue-600 hover:underline">View</button>
+            ${b.status === 'running' ? `<button onclick="cancelBatch('${b.batch_id}')" class="text-red-600 hover:underline">Cancel</button>` : ''}
+            ${['failed','partial'].includes(b.status) ? `<button onclick="retryBatch('${b.batch_id}')" class="text-orange-600 hover:underline">Retry</button>` : ''}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+    function statusColor(s){ return s==='completed'?'bg-green-100 text-green-800':s==='failed'?'bg-red-100 text-red-800':s==='running'?'bg-yellow-100 text-yellow-800':'bg-gray-100 text-gray-800';}
+    async function viewBatch(id){ window.location.href=`/static_2/batch_detail.html?batch_id=${id}`; }
+    async function cancelBatch(id){ if(confirm('Cancel this batch?')){ await fetch(`/api/batch/${id}/cancel`,{method:'POST'}); loadBatches(); }}
+    async function retryBatch(id){ if(confirm('Retry failed calls?')){ await fetch(`/api/batch/${id}/retry`,{method:'POST'}); loadBatches(); }}
+
+    // ----- CSV upload -----
+    async function uploadCSV(){
+      const form = document.getElementById('uploadForm');
+      const data = new FormData(form);
+      const res = await fetch('/api/batch/create', {method:'POST', body:data});
+      if(res.ok){ alert('Batch created!'); loadBatches(); form.reset(); }
+      else{ const err=await res.text(); alert('Error: '+err); }
+    }
+  </script>
+</head>
+<body class="bg-gray-50 p-4" onload="loadBatches()">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="text-2xl font-bold mb-4">Batch Calling Dashboard</h1>
+
+    <!-- Upload form -->
+    <div class="bg-white p-4 rounded shadow mb-6">
+      <form id="uploadForm" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <input type="text" name="name" placeholder="Batch name (optional)" class="border p-2 rounded">
+        <input type="text" name="agent_id" placeholder="Agent ID" required class="border p-2 rounded">
+        <input type="text" name="agent_phone_number_id" placeholder="Phone Number ID" required class="border p-2 rounded">
+        <input type="text" ngồi="voice_id" placeholder="Voice ID (optional)" class="border p-2 rounded">
+        <input type="text" name="language" placeholder="Language (en/hi)" class="border p-2 rounded">
+        <input type="file" name="csv_file" accept=".csv" required class="border p-2 rounded">
+        <button type="button" onclick="uploadCSV()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Start Batch</button>
+      </form>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded shadow overflow-x-auto">
+      <table class="w-full text-left">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="p-2">Batch ID</th><th class="p-2">Name</th><th class="p-2">Status</th>
+            <th class="p-2">Total</th><th class="p-2">OK</th><th class="p-2">Failed</th>
+            <th class="p-2">Created</th><th class="p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="batch-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

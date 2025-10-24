@@ -1,0 +1,29 @@
+.live-status {
+  padding: 1rem;
+}
+
+.live-status h4 {
+  color: #fff;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+.status-info {
+  background: #1a1a1a;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.status-info p {
+  margin: 0.75rem 0;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.status-info i {
+  color: #4CAF50;
+  width: 16px;
+}

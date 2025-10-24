@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head><title>ElevenLabs Outbound Call</title></head>
+<body>
+    <h2>Make a Call</h2>
+    <label>Language:</label>
+    <select id="language">
+        <option value="english_male">English Male</option>
+        <option value="english_female">English Female</option>
+        <option value="hindi_male">Hindi Male</option>
+        <option value="hindi_female">Hindi Female</option>
+    </select><br><br>
+    <label>Category:</label>
+    <select id="category">
+        <option value="banking_enquiry">Banking Enquiry</option>
+        <option value="new_account_opening">New Account Opening</option>
+        <option value="loan_enquiry">Loan Enquiry</option>
+    </select><br><br>
+    <label>Customer Name:</label>
+    <input type="text" id="customer_name" placeholder="e.g., Neelay"/><br><br>
+    <label>Phone Number:</label>
+    <input type="text" id="phone" placeholder="+91xxxxxxxxxx"/><br><br>
+    <button onclick="makeCall()">Call</button>
+
+    <script>
+        const agentMap = {
+            'english_male': 'agent_9101k44hh4rce88t2kqdqfm7g4s7',
+            'english_female': 'agent_6201k5xq206xf6jbmvz3007mn2df',  // Corrected to match your English Female agent
+            'hindi_male': 'agent_4301k5k7skh3e358s1pm0qrdkn4z',
+            'hindi_female': 'agent_4302k5k7skh3e358s1pm0qrdkn4y'
+        };
+        const AGENT_PHONE_NUMBER_ID = 'phnum_6401k7kw1kysfpzaggkpdf6g0tfy';  // Updated to match your logs
+        const API_BASE_URL = 'https://7020ea2f9346.ngrok-free.app';
+
+        async function makeCall() {
+            const lang_gender = document.getElementById("language").value;
+            const agent_id = agentMap[lang_gender];
+            const category = document.getElementById("category").value;
+            const customer_name = document.getElementById("customer_name").value || "Customer";
+            const to_number = document.getElementById("phone").value;
+
+            if (!agent_id) {
+                alert("Invalid language selection—configure the agent.");
+                return;
+            }
+
+            if (!to_number || !to_number.match(/^\+\d{10,12}$/)) {
+                alert("Please enter a valid phone number.");
+                return;
+            }
+
+            const body = {
+                agent_id: agent_id,
+                agent_phone_number_id: AGENT_PHONE_NUMBER_ID,
+                to_number: to_number,
+                category: category,
+                customer_name: customer_name
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/outbound_call`, {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify(body)
+                });
+
+                const data = await response.json();
+                console.log("ElevenLabs response:", data);
+                if (data.error) alert("Error: " + data.error);
+                else alert("Call initiated! Response: " + JSON.stringify(data));
+            } catch (error) {
+                console.error("Error making call:", error);
+                alert("Failed to make the call. Check console.");
+            }
+        }
+    </script>
+</body>
+</html>

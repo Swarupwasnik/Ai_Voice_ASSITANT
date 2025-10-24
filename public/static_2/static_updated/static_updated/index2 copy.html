@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link rel="icon" type="image/x-icon" href="./logo-r.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+   <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", "Segoe UI", sans-serif;
+      }
+
+      body {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("./hel.jpeg") no-repeat center center fixed;
+        background-size: cover;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        overflow-x: hidden;
+        color: white;
+      }
+
+      /* Professional Header Styles */
+      .main-header {
+        width: 100%;
+        background: transparent;
+        /* background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);  */
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+      }
+
+      .logo-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logo-section h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fff 0%, #a8c0ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .logo-image {
+        /* The filter property that created the glow has been removed. */
+        transition: filter 0.3s ease;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 30px;
+      }
+
+      .nav-menu a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        padding: 8px 0;
+        position: relative;
+      }
+
+      .nav-menu a:hover {
+        color: white;
+      }
+
+      .nav-menu a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+        transition: width 0.3s;
+      }
+
+      .nav-menu a:hover::after {
+        width: 100%;
+      }
+
+      .header-actions {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+      }
+
+      /* Hamburger menu - hidden on desktop by default */
+      .hamburger-menu {
+        display: none; /* shown in mobile via media query */
+        background: transparent;
+        border: none;
+        color: #fff;
+        font-size: 22px;
+        cursor: pointer;
+        padding: 8px;
+      }
+
+      .btn-support {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 8px 15px;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .btn-support:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      /* Main Content Area */
+      .main-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        width: 100%;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1400px; /* Increased max-width for larger dashboard */
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+      }
+
+      .page-title {
+        text-align: center;
+        margin-bottom: 10px;
+      }
+
+      .page-title h2 {
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+        background: linear-gradient(135deg, #fff 0%, #a8c0ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .page-title p {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Content Wrapper for Form and Chat */
+      .content-wrapper {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        justify-content: center;
+        width: 100%;
+        position: relative;
+      }
+
+      /* Form Section - On the Right */
+      .form-section {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        animation: fadeIn 1s ease-out;
+        width: 100%;
+        max-width: 450px;
+        position: relative;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .form-header {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+        color: white;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .form-header::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.1) 0%,
+          transparent 70%
+        );
+        animation: rotate 20s linear infinite;
+      }
+
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .form-header h3 {
+        font-size: 22px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        position: relative;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .form-header p {
+        font-size: 14px;
+        opacity: 0.9;
+        position: relative;
+      }
+
+      .content {
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .form-container {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.08) 0%,
+          rgba(255, 255, 255, 0.04) 100%
+        );
+        border-radius: 16px;
+        padding: 25px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.6s ease-out;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .form-group {
+        position: relative;
+      }
+
+      .form-group.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #fff;
+        font-size: 14px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 14px 15px;
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        border-radius: 10px;
+        font-size: 14px;
+        transition: all 0.3s;
+        background: rgba(255, 255, 255, 0.08);
+        color: white;
+      }
+
+      /* Phone prefix UI */
+      .phone-input-wrapper {
+        position: relative;
+      }
+      .phone-prefix {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        pointer-events: none;
+      }
+      #mobile.form-control {
+        padding-left: 48px; /* space for +91 prefix */
+      }
+
+      .form-control::placeholder {
+        color: rgba(255, 255, 255, 0.6);
+      }
+
+      .form-control:focus {
+        border-color: rgba(102, 126, 234, 0.8);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        outline: none;
+        transform: translateY(-2px);
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .select-wrapper {
+        position: relative;
+      }
+
+      .select-wrapper::after {
+        content: "▼";
+        font-size: 10px;
+        color: rgba(102, 126, 234, 0.8);
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+      }
+
+      select.form-control {
+        appearance: none;
+        color: white;
+      }
+
+      select.form-control option {
+        background: #2d3748;
+        color: white;
+      }
+
+      .gender-selection {
+        display: flex;
+        gap: 15px;
+        margin-top: 5px;
+      }
+
+      .gender-option {
+        flex: 1;
+        text-align: center;
+        padding: 15px;
+        border: 2px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        background: rgba(255, 255, 255, 0.08);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .gender-option::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.15),
+          transparent
+        );
+        transition: 0.6s;
+      }
+
+      .gender-option:hover::before {
+        left: 100%;
+      }
+
+      .gender-option.selected {
+        border-color: rgba(102, 126, 234, 0.8);
+        background: rgba(102, 126, 234, 0.15);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .gender-option i {
+        font-size: 24px;
+        margin-bottom: 8px;
+        color: rgba(255, 255, 255, 0.8);
+        transition: all 0.3s;
+      }
+
+      .gender-option.selected i {
+        color: #fff;
+        transform: scale(1.1);
+      }
+
+      .gender-option span {
+        font-size: 14px;
+        font-weight: 500;
+        display: block;
+        color: white;
+      }
+
+      .gender-option:hover {
+        border-color: rgba(102, 126, 234, 0.8);
+        transform: translateY(-2px);
+      }
+
+      .btn-start {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-start::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: 0.5s;
+      }
+
+      .btn-start:hover::before {
+        left: 100%;
+      }
+
+      .btn-start:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      }
+
+      .btn-start:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      /* Larger Chat Dashboard */
+      .chat-dashboard {
+        display: none;
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+        animation: fadeIn 0.6s ease-out;
+        flex-direction: column;
+        height: 600px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        width: 100%;
+        max-width: 900px; /* Increased width */
+        flex-grow: 1;
+      }
+
+      .chat-header {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+        color: white;
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .chat-header img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+      }
+
+      .chat-header-info {
+        flex: 1;
+      }
+
+      .chat-header-info h3 {
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .chat-header-info p {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .chat-content {
+        flex: 1;
+        display: flex;
+        overflow: hidden;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 25px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .chat-messages::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .chat-messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .chat-messages::-webkit-scrollbar-thumb {
+        background: rgba(102, 126, 234, 0.3);
+        border-radius: 3px;
+      }
+
+      .message {
+        max-width: 100%; /* Slightly wider messages */
+        margin-bottom: 5px;
+        position: relative;
+        display: flex; /* Add flex display */
+        align-items: flex-end; /* Align items to the bottom */
+        gap: 10px; /* Space between icon and bubble */
+      }
+
+      @keyframes messageSlide {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .message.sender {
+        align-self: flex-end;
+        flex-direction: row-reverse; /* Reverse order for sender */
+        animation-name: messageSlideSender;
+      }
+
+      @keyframes messageSlideSender {
+        from {
+          opacity: 0;
+          transform: translateX(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .message-bubble {
+        padding: 14px 18px;
+        border-radius: 18px;
+        position: relative;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        word-wrap: break-word;
+        max-width: 100%;
+        word-break: break-word;
+        /* Break long words */
+      }
+
+      .sender .message-bubble {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+        color: white;
+        border: 1px solid transparent;
+        border-bottom-right-radius: 0;
+      }
+
+      .receiver .message-bubble {
+        /* background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%); */
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom-left-radius: 0;
+      }
+
+      .message-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-bottom: 5px; /* Align with bubble bottom */
+      }
+
+      .sender .message-icon {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+      }
+
+      .receiver .message-icon {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.1) 0%,
+          rgba(255, 255, 255, 0.05) 100%
+        );
+      }
+
+      .message-icon i {
+        color: white;
+      }
+
+      .message-content {
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .message-time {
+        font-size: 10px;
+        opacity: 0.7;
+        text-align: right;
+        margin-top: 5px;
+      }
+
+      .receiver .message-time {
+        text-align: left;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      .sender .message-time {
+        color: rgba(255, 255, 255, 0.8);
+      }
+
+      .chat-sidebar {
+        width: 300px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        border-left: 1px solid rgba(255, 255, 255, 0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .info-card {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        backdrop-filter: blur(10px);
+      }
+
+      .info-card i {
+        font-size: 24px;
+        color: rgba(102, 126, 234, 0.9);
+        margin-bottom: 10px;
+      }
+
+      .info-card h4 {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 5px;
+      }
+
+      .info-card p {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+      }
+
+      .chat-footer {
+        padding: 20px;
+        display: flex;
+        gap: 15px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.05);
+        justify-content: flex-end;
+      }
+
+      .btn-new-call {
+        background: linear-gradient(
+          135deg,
+          rgba(74, 85, 104, 0.9) 0%,
+          rgba(45, 55, 72, 0.9) 100%
+        );
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-new-call:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Premium Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(15px);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.4s;
+      }
+
+      .modal.active {
+        display: flex;
+        opacity: 1;
+      }
+
+      .modal-content {
+        background: rgba(15, 23, 42, 0.8); /* Semi-transparent background */
+        width: 90%;
+        max-width: 500px;
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        transform: scale(0.8);
+        animation: modalAppear 0.4s forwards;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(20px);
+      }
+
+      .caller_icon,
+      .receiver_icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+        animation: iconPulse 2s infinite;
+      }
+
+      .caller_icon {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+        animation: iconPulse 2s infinite, ripple 2s infinite;
+      }
+
+      .receiver_icon {
+        background: linear-gradient(
+          135deg,
+          rgba(72, 187, 120, 0.9) 0%,
+          rgba(56, 161, 105, 0.9) 100%
+        );
+        box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+        /* animation: iconPulse 2s infinite, ripple 2s infinite 1s; */
+      }
+
+      .caller_icon i,
+      .receiver_icon i {
+        font-size: 32px;
+        color: white;
+      }
+
+      @keyframes iconPulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      @keyframes ripple {
+        0% {
+          box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+        }
+      }
+
+      @keyframes modalAppear {
+        to {
+          transform: scale(1);
+        }
+      }
+
+      .modal-header {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+        color: white;
+        padding: 25px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .modal-header::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          circle at top right,
+          rgba(255, 255, 255, 0.1),
+          transparent 70%
+        );
+      }
+
+      .modal-header h2 {
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        position: relative;
+      }
+
+      .modal-body {
+        padding: 35px 30px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .connection-animation {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 30px 0;
+        position: relative;
+        height: 120px;
+      }
+
+      .caller,
+      .receiver {
+        width: 100%;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+        animation: devicePulse 2s infinite;
+      }
+
+      @keyframes devicePulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      .caller {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.9) 0%,
+          rgba(118, 75, 162, 0.9) 100%
+        );
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+        animation: devicePulse 2s infinite, ripple 2s infinite;
+      }
+
+      .receiver {
+        /* background: linear-gradient(135deg, rgba(72, 187, 120, 0.9) 0%, rgba(56, 161, 105, 0.9) 100%); */
+        box-shadow: 0 0 0 0 rgba(72, 187, 120, 0.7);
+        /* animation: devicePulse 2s infinite, ripple 2s infinite 1s; */
+      }
+
+      @keyframes ripple {
+        0% {
+          box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7);
+        }
+        70% {
+          box-shadow: 0 0 0 20px rgba(102, 126, 234, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(102, 126, 234, 0);
+        }
+      }
+
+      .caller i,
+      .receiver i {
+        font-size: 32px;
+        color: white;
+      }
+      /* Hide icons inside modal as requested */
+      .modal .caller i,
+      .modal .receiver i {
+        display: none;
+      }
+
+      .connection-dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        gap: 12px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(102, 126, 234, 0.7);
+        animation: dotPulse 1.5s infinite;
+      }
+
+      .dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      .dot:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+
+      .dot:nth-child(5) {
+        animation-delay: 0.8s;
+      }
+
+      @keyframes dotPulse {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.5;
+        }
+        50% {
+          transform: scale(1.5);
+          opacity: 1;
+        }
+      }
+
+      .status-text {
+        margin-top: 20px;
+        font-weight: 500;
+        color: rgba(255, 255, 255, 0.8);
+        animation: statusBlink 1.5s infinite;
+      }
+
+      @keyframes statusBlink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0.5;
+        }
+      }
+
+      .modal-footer {
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .btn-disconnect {
+        background: linear-gradient(
+          135deg,
+          rgba(229, 62, 62, 0.9) 0%,
+          rgba(197, 48, 48, 0.9) 100%
+        );
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-disconnect:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Footer Styles */
+      .main-footer {
+        width: 100%;
+        max-width: 1200px;
+        padding: 20px 0;
+        text-align: center;
+        margin: 0 auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .footer-logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #fff 0%, #a8c0ff 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .footer-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .footer-links a:hover {
+        color: white;
+      }
+
+      .footer-copyright {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 0.9rem;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1200px) {
+        .container {
+          max-width: 1100px;
+        }
+
+        .chat-dashboard {
+          max-width: 800px;
+        }
+      }
+
+      @media (max-width: 1024px) {
+        .content-wrapper {
+          flex-direction: column;
+          align-items: center;
+          gap: 30px;
+        }
+
+        .form-section {
+          max-width: 600px;
+          width: 100%;
+          /* Added to keep form in the same position */
+          order: 2;
+          margin-top: 30px;
+        }
+
+        .chat-dashboard {
+          max-width: 100%;
+          order: 1;
+        }
+
+        .chat-sidebar {
+          width: 250px;
+        }
+      }
+
+      /* Apply the shift only on larger screens */
+      @media (min-width: 1025px) {
+        .form-section {
+          left: 300px; /* Move the form 300px to the right on desktop */
+        }
+      }
+
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: row; /* Keep items in a row */
+          justify-content: space-between; /* Space out logo and hamburger */
+        }
+
+        .nav-menu {
+          display: none; /* Hide nav links by default on mobile */
+          flex-direction: column;
+          position: absolute;
+          top: 100%; /* Position below the header */
+          left: 0;
+          width: 100%;
+          background: rgba(30, 41, 59, 0.98);
+          padding: 20px;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-menu.active {
+          display: flex; /* Show nav links when active */
+        }
+
+        .hamburger-menu {
+          display: block; /* Show hamburger on mobile */
+        }
+
+        .header-actions {
+          display: none; /* Hide the support button on mobile for simplicity */
+        }
+
+        .chat-content {
+          flex-direction: column;
+        }
+
+        .chat-sidebar {
+          width: 100%;
+          border-left: none;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          order: 2;
+          padding: 15px;
+        }
+
+        .chat-messages {
+          order: 1;
+          min-height: 300px;
+          max-height: 400px;
+        }
+
+        .gender-selection {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .footer-content {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .message {
+          max-width: 90%;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .content {
+          padding: 20px;
+        }
+
+        .form-container {
+          padding: 15px;
+        }
+
+        .chat-header {
+          padding: 15px;
+        }
+
+        .chat-messages {
+          padding: 15px;
+        }
+
+        .info-card {
+          padding: 12px;
+        }
+
+        .connection-animation {
+          margin: 20px 0;
+        }
+
+        .caller,
+        .receiver {
+          width: 100%;
+          height: 70px;
+        }
+
+        .caller i,
+        .receiver i {
+          font-size: 28px;
+        }
+
+        .modal-content {
+          max-width: 95%;
+        }
+
+        .message {
+          max-width: 95%;
+        }
+      }
+
+      /* Shake animation for form validation */
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        10%,
+        30%,
+        50%,
+        70%,
+        90% {
+          transform: translateX(-10px);
+        }
+        20%,
+        40%,
+        60%,
+        80% {
+          transform: translateX(10px);
+        }
+      }
+
+      /* Mobile number validation styling */
+      .mobile-validation {
+        font-size: 12px;
+        margin-top: 5px;
+        display: block;
+      }
+
+      .mobile-validation.valid {
+        color: #4ade80;
+      }
+
+      .mobile-validation.invalid {
+        color: #f87171;
+      }
+
+      /* Toast (custom alert) */
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: rgba(30, 41, 59, 0.95);
+        color: #fff;
+        padding: 12px 16px;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        border: 1px solid rgba(255,255,255,0.1);
+        opacity: 0;
+        transform: translateY(20px);
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        z-index: 2000;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Professional Header -->
+    <header class="main-header">
+      <div class="header-content">
+        <div class="logo-section">
+          <img
+            src="./logo-r.png"
+            alt="Virtual Galaxy Logo"
+            class="logo-image"
+            height="60px"
+            width="140px"
+          />
+
+          <!-- <i class="fas fa-robot"></i>
+                <h1>Virtual Galaxy AI Banking</h1> -->
+        </div>
+        <button class="hamburger-menu" id="hamburger-menu">
+          <i class="fas fa-bars"></i>
+        </button>
+        <nav class="nav-menu">
+          <a href="#"><i class="fas fa-home"></i> Home</a>
+          <a href="#"><i class="fas fa-comments"></i> AI Assistant</a>
+          <a href="#"><i class="fas fa-university"></i> Banking Services</a>
+          <a href="#"><i class="fas fa-phone-alt"></i> Contact</a>
+          <a href="#"><i class="fas fa-info-circle"></i> About</a>
+        </nav>
+        <div class="header-actions">
+          <button class="btn-support">
+            <i class="fas fa-headset"></i> Support
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="container">
+        <!-- Content Wrapper for Form and Chat -->
+        <div class="content-wrapper">
+          <!-- Larger Chat Dashboard -->
+          <div class="chat-dashboard" id="chat-dashboard">
+            <div class="chat-header">
+              <img
+                src="https://ui-avatars.com/api/?name=AI+Assistant&background=667eea&color=fff"
+                alt="AI Assistant"
+              />
+              <div class="chat-header-info">
+                <h3>AI Banking Assistant</h3>
+                <p>Online - Ready to help</p>
+              </div>
+            </div>
+
+            <div class="chat-content">
+              <div class="chat-messages" id="chat-messages">
+                <!-- Messages will be added here dynamically -->
+              </div>
+
+              <div class="chat-sidebar">
+                <div class="info-card">
+                  <i class="fas fa-coins"></i>
+                  <h4>Call Summary</h4>
+                  <p id="account-balance-value">—</p>
+                </div>
+
+               
+              </div>
+            </div>
+
+            <div class="chat-footer">
+              <button class="btn-new-call" id="new-call">
+                <i class="fas fa-phone"></i> New Call
+              </button>
+            </div>
+          </div>
+
+          <!-- Form Section - On the Right -->
+          <div class="form-section">
+            <div class="form-header">
+              <h3 style="color: greenyellow;"><i class="fas fa-phone"></i> Start Your Conversation</h3>
+              <p>
+                Fill in your details to connect with our AI banking assistant
+              </p>
+            </div>
+
+            <div class="content">
+              <div class="form-container" id="form-container">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input
+                      type="text"
+                      id="name"
+                      class="form-control"
+                      placeholder="Enter your Name"
+                    />
+                  </div>
+
+                  <div class="form-group">
+                    <label for="mobile">Mobile Number</label>
+                    <div class="phone-input-wrapper">
+                      <span class="phone-prefix">+91</span>
+                      <input
+                        type="tel"
+                        id="mobile"
+                        class="form-control"
+                        placeholder="9XXXXXXXXXX"
+                        inputmode="tel"
+                      />
+                    </div>
+                    <span
+                     style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;"
+                      id="mobile-validation"
+                      class="mobile-validation"
+                    ></span>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="language">Language</label>
+                    <div class="select-wrapper">
+                      <select id="language" class="form-control">
+                        <!-- ID is kept as 'language' for simplicity -->
+                        <option value="">Select Language</option>
+                        <option value="english_male">English Male</option>
+                        <option value="english_female">English Female</option>
+                        <option value="hindi_male">Hindi Male</option>
+                        <option value="hindi_female">Hindi Female</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="category">Category</label>
+                    <div class="select-wrapper">
+                      <select id="category" class="form-control">
+                        <option value="">Select Category</option>
+                        <option value="banking_enquiry">Banking Enquiry</option>
+                        <option value="new_account_opening">New Account Opening</option>
+                        <option value="loan_enquiry">Loan Enquiry</option>
+                        <option value="emi_reminder">EMI Reminder</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group full-width">
+                  <button style="color: yellowgreen;" class="btn-start" id="start-call" disabled>
+                    <!-- The gender selection is removed, validation will be updated -->
+                    <i class="fas fa-phone"></i> Start Voice Call
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Premium Footer -->
+    <footer class="main-footer">
+      <div class="footer-content">
+        <div class="footer-logo">
+          <img
+            src="./logo-r.png"
+            alt="Virtual Galaxy Logo"
+            class="logo-image"
+            height="60px"
+            width="140px"
+          />
+
+          <!-- <img src="./virtual_logo.png" alt="vir" height="80px" width="120px"> -->
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="footer-copyright">
+          © 2025 Virtual Galaxy Ltd. All rights reserved.
+        </div>
+      </div>
+    </footer>
+
+    <!-- Premium Connecting Modal -->
+    <div class="modal" id="connecting-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2><i class="fas fa-phone-alt"></i> Connecting to AI Assistant</h2>
+        </div>
+        <div class="modal-body">
+          <p>Establishing secure connection to AI Banking Assistant...</p>
+          <div class="connection-animation">
+            <div class="caller_icon">
+                              <i class="fas fa-robot icon-agent"></i>
+
+              <!-- <i class="fas fa-user icon-user"></i> -->
+            </div>
+            <div class="connection-dots">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+            <div class="receiver_icon">
+              <i class="fas fa-user icon-user"></i>
+
+              <!-- <i class="fas fa-robot icon-agent"></i> -->
+            </div>
+          </div>
+          <div class="status-text">Please hold while we connect you...</div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-disconnect" id="disconnect-call">
+            <i class="fas fa-phone-slash"></i> End Call
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const startCallBtn = document.getElementById("start-call");
+        const disconnectCallBtn = document.getElementById("disconnect-call");
+        const newCallBtn = document.getElementById("new-call");
+        const modal = document.getElementById("connecting-modal");
+        const formContainer = document.getElementById("form-container");
+        const chatDashboard = document.getElementById("chat-dashboard");
+        const chatMessages = document.getElementById("chat-messages");
+        const callDurationEl = document.getElementById("call-duration");
+        const mobileInput = document.getElementById("mobile");
+        const mobileValidation = document.getElementById("mobile-validation");
+        const hamburger = document.getElementById("hamburger-menu");
+        const navMenu = document.querySelector(".nav-menu");
+
+        let callSid = null;
+        let ws = null;
+        let callStartTime = null;
+        let callDurationInterval = null;
+        let lastCustomerName = null; // Keep caller name for UI messages
+        let pollingInterval = null;  // Poll for saved conversation after call
+        let lastConversationId = null; // Avoid reloading the same transcript
+
+        const agentMap = {
+          english_male: "agent_9101k44hh4rce88t2kqdqfm7g4s7",
+          english_female: "agent_6201k5xq206xf6jbmvz3007mn2df",
+          hindi_male: "agent_4301k5k7skh3e358s1pm0qrdkn4z",
+          hindi_female: "agent_4302k5k7skh3e358s1pm0qrdkn4y",
+        }; 
+        const AGENT_PHONE_NUMBER_ID = "phnum_6401k7kw1kysfpzaggkpdf6g0tfy";
+        const API_BASE_URL = "https://7020ea2f9346.ngrok-free.app";
+        
+        // Mobile nav: toggle via hamburger
+        if (hamburger && navMenu) {
+          hamburger.addEventListener("click", function (e) {
+            e.stopPropagation();
+            navMenu.classList.toggle("active");
+          });
+
+          // Close when clicking a nav link
+          navMenu.querySelectorAll("a").forEach(function (link) {
+            link.addEventListener("click", function () {
+              navMenu.classList.remove("active");
+            });
+          });
+
+          // Close when clicking outside
+          document.addEventListener("click", function (e) {
+            const isClickInside =
+              navMenu.contains(e.target) || hamburger.contains(e.target);
+            if (!isClickInside) {
+              navMenu.classList.remove("active");
+            }
+          });
+        }
+
+        // Mobile validation helpers
+        const MOBILE_REGEX = /^[6-9]\d{9}$/;
+
+        function isValidMobile(value) {
+          // Test against the raw 10-digit number
+          const justDigits = value.replace(/[^\d]/g, "").slice(-10);
+          return MOBILE_REGEX.test(justDigits);
+        }
+
+        function formatMobile(value) {
+          // Keep only digits from the input
+          let digits = value.replace(/[^\d]/g, "");
+          // Keep only the last 10 digits
+          return digits.slice(0, 10);
+        }
+
+        // Function to update start button state
+        function updateStartButton() {
+          const name = document.getElementById("name").value.trim();
+          const mobile = document.getElementById("mobile").value.trim();
+          const language = document.getElementById("language").value;
+          const category = document.getElementById("category").value;
+          const mobileValid = isValidMobile(mobile);
+
+          if (name && mobileValid && language && category) {
+            startCallBtn.disabled = false;
+          } else {
+            startCallBtn.disabled = true;
+          }
+        }
+
+        // Mobile number validation and formatting
+        mobileInput.addEventListener("input", function () {
+          // Allow only Indian 10-digit numbers, UI already shows +91 prefix
+          let value = this.value.replace(/[^\d]/g, "");
+          if (value.length > 0 && !/^[6-9]/.test(value)) {
+            value = "";
+          }
+          this.value = value.slice(0, 10);
+
+          const isValid = isValidMobile(this.value);
+          if (this.value.trim() === "") {
+            mobileValidation.textContent = "";
+            mobileValidation.className = "mobile-validation";
+          } else if (isValid && this.value.length === 10) {
+            mobileValidation.textContent = "India Number:+91" + this.value;
+            mobileValidation.className = "mobile-validation valid";
+          } else {
+            mobileValidation.textContent =
+              "✗ Enter 10 digits only (India), starts with 6/7/8/9";
+            mobileValidation.className = "mobile-validation invalid";
+          }
+
+          updateStartButton();
+        });
+
+        // Update button state on input changes
+        document
+          .getElementById("name")
+          .addEventListener("input", updateStartButton);
+        document
+          .getElementById("language")
+          .addEventListener("change", updateStartButton);
+        document
+          .getElementById("category")
+          .addEventListener("change", updateStartButton);
+
+        // Initialize button state
+        updateStartButton();
+
+        // Update call duration
+        function updateCallDuration() {
+          if (!callStartTime) return;
+          const el = document.getElementById("call-duration");
+          if (!el) return;
+          const now = new Date();
+          const diff = Math.floor((now - callStartTime) / 1000);
+          const minutes = Math.floor(diff / 60);
+          const seconds = diff % 60;
+          el.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+        }
+
+        // Start chat functionality
+        startCallBtn.addEventListener("click", function () {
+          const customer_name = document.getElementById("name").value.trim();
+          const mobile = document.getElementById("mobile").value.trim();
+          const lang_gender = document.getElementById("language").value;
+          const category = document.getElementById("category").value;
+
+          // Keep name for later messages (e.g., when user cuts the call)
+          lastCustomerName = customer_name;
+
+          console.log("Form validation:", {
+            customer_name,
+            mobile,
+            lang_gender,
+            category,
+          });
+
+          if (!customer_name || !mobile || !lang_gender || !category) {
+            // Add shake animation to form
+            formContainer.style.animation = "shake 0.5s";
+            setTimeout(() => {
+              formContainer.style.animation = "";
+            }, 500);
+
+            // Show specific error message
+            const missingFields = [];
+            if (!customer_name) missingFields.push("Name");
+            if (!mobile) missingFields.push("Mobile Number");
+            if (!lang_gender) missingFields.push("Language & Voice");
+            if (!category) missingFields.push("Category");
+
+            alert("Please fill in the following fields: " + missingFields.join(", "));
+            return;
+          }
+
+          // Additional mobile format validation
+          if (!isValidMobile(mobile)) {
+            formContainer.style.animation = "shake 0.5s";
+            setTimeout(() => {
+              formContainer.style.animation = "";
+            }, 500);
+            mobileValidation.textContent =
+              "✗ Enter 10 digits only (India), starts with 6/7/8/9";
+            mobileValidation.className = "mobile-validation invalid";
+            return;
+          }
+
+          // Show connecting modal
+          modal.classList.add("active");
+
+          // Make API call to initiate the call (logic from New_neel.html)
+          const agent_id = agentMap[lang_gender]; // This gets the correct agent ID
+          const to_number = `+91${mobile.replace(/[^\d]/g, "")}`;
+
+          const body = {
+            agent_id: agent_id,
+            agent_phone_number_id: AGENT_PHONE_NUMBER_ID,
+            to_number: to_number,
+            category: category, // This now sends the correct value e.g., "loan_enquiry"
+            customer_name: customer_name,
+          };
+          
+          console.log("API Request Body:", body);
+
+          fetch(`${API_BASE_URL}/api/outbound_call`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Network response was not ok");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              console.log("ElevenLabs response:", data);
+              if (data && data.error) {
+                throw new Error(data.error);
+              }
+              callSid = data.call_sid || data.sid || null;
+
+              // Start call duration timer
+              callStartTime = new Date();
+              callDurationInterval = setInterval(updateCallDuration, 1000);
+
+              // Keep modal open during call - don't close it yet
+              // modal.classList.remove("active");
+              // chatDashboard.style.display = "flex";
+              // document.querySelector(".form-section").style.display = "none"; // Hide form
+
+              // Update modal status to show call is connected
+              const statusText = document.querySelector(".status-text");
+              if (statusText) {
+                statusText.textContent = "Call connected! Please wait for the conversation to connected the customer..";
+              }
+
+              // Start auto-detection for call end
+              startAutoDetectConversationEnd();
+            })
+            .catch((error) => {
+              console.error("Error initiating call:", error);
+              modal.classList.remove("active");
+              showToast("Failed to start the call. Check number/agent config and try again.");
+            });
+        });
+
+        // Load conversation by ID from backend API and render into chat
+        async function loadConversation(conversationId) {
+          try {
+            console.log(`Loading conversation: ${conversationId}`);
+            
+            // Ensure chat is visible and modal hidden when rendering transcript
+            modal.classList.remove("active");
+            chatDashboard.style.display = "flex";
+            document.querySelector(".form-section").style.display = "none";
+
+            chatMessages.innerHTML = "";
+            
+            // Use the messages endpoint that returns { status, conversation_id, messages: [{role, message}] }
+            const resp = await fetch(`${API_BASE_URL}/api/conversations/${conversationId}/messages`);
+            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+            const data = await resp.json();
+
+            console.log("Conversation data received:", data);
+
+            const transcript = Array.isArray(data?.messages) ? data.messages : [];
+            if (!transcript.length) {
+              addMessage("Transcript not available yet.", "receiver");
+              return;
+            }
+
+            // Try to populate sidebar account info from transcript
+            updateAccountInfoFromMessages(transcript);
+
+            
+            // Display messages with a slight delay for better UX
+            transcript.forEach((msg, index) => {
+              if (!msg || typeof msg.message !== "string") return;
+              const role = (msg.role || "").toLowerCase();
+              setTimeout(() => {
+                addMessage(
+                  msg.message,
+                  role === "agent" ? "receiver" : "sender"
+                );
+              }, (index + 1) * 500); // Slightly longer delay for better readability
+            });
+          } catch (err) {
+            console.error("Error loading conversation messages by ID:", err);
+            addMessage("Could not load conversation messages.", "receiver");
+          }
+        }
+
+        // Show custom toast (no browser alert)
+        function showToast(message) {
+          const el = document.getElementById("toast");
+          if (!el) return;
+          el.textContent = message;
+          el.classList.add("show");
+          setTimeout(() => el.classList.remove("show"), 3000);
+        }
+
+        // Attempt to extract and populate account number/balance from messages
+        function updateAccountInfoFromMessages(messages) {
+          try {
+            const accEl = document.getElementById('account-number-value');
+            const balEl = document.getElementById('account-balance-value');
+            if (!messages || !messages.length) return;
+
+            let accountNumber = null;
+            let balance = null;
+
+            const accRegex = /(?:account\s*number\s*[:\-]?\s*)([\dXx\- ]{8,})/i;
+            const pan16 = /\b(\d{4}[- ]?\d{4}[- ]?\d{4}[- ]?\d{4})\b/;
+            const pan12 = /\b(\d{4}[- ]?\d{4}[- ]?\d{4})\b/;
+            const balRegex = /(?:balance|bal)\s*[:\-]?\s*(?:₹|rs\.?|inr\s*)?([\d,]+(?:\.\d{1,2})?)/i;
+
+            for (const m of messages) {
+              const text = (m.message || '').toString();
+              if (!accountNumber) {
+                const m1 = text.match(accRegex) || text.match(pan16) || text.match(pan12);
+                if (m1 && m1[1]) accountNumber = m1[1].replace(/\s+/g, '');
+              }
+              if (!balance) {
+                const b1 = text.match(balRegex);
+                if (b1 && b1[1]) balance = `₹${b1[1]}`;
+              }
+              if (accountNumber && balance) break;
+            }
+
+            if (accEl && accountNumber) accEl.textContent = accountNumber;
+            if (balEl && balance) balEl.textContent = balance;
+          } catch (e) {
+            console.warn('Could not parse account info from transcript:', e);
+          }
+        }
+
+        // Common handler when a call ends (manual or auto-detected)
+        function onCallEnded(trigger = "user") {
+          const nameForMsg = lastCustomerName || "User";
+          
+          // Close modal, show chat
+          modal.classList.remove("active");
+          chatDashboard.style.display = "flex";
+          document.querySelector(".form-section").style.display = "none";
+
+          // Announce in chat and toast
+          addMessage(trigger === "auto" ? "Call ended." : `${nameForMsg} cut the call.`, "sender");
+          showToast(trigger === "auto" ? "Call ended" : `${nameForMsg} cut the call`);
+
+          if (ws) ws.close();
+          callSid = null;
+
+          if (callDurationInterval) {
+            clearInterval(callDurationInterval);
+            callDurationInterval = null;
+          }
+          if (callDurationEl) callDurationEl.textContent = "0:00";
+
+          // Stop auto-detection polling
+          if (autoEndPollingInterval) {
+            clearInterval(autoEndPollingInterval);
+            autoEndPollingInterval = null;
+          }
+
+          // Begin polling for saved conversation
+          pollForConversation();
+        }
+
+        let autoEndPollingInterval = null;
+        function startAutoDetectConversationEnd() {
+          if (autoEndPollingInterval) clearInterval(autoEndPollingInterval);
+          const startedAtMs = callStartTime ? callStartTime.getTime() : 0;
+
+          async function checkEnd() {
+            try {
+              console.log("Auto-detecting conversation end...");
+              const res = await fetch(`${API_BASE_URL}/api/conversations`);
+              if (!res.ok) return;
+              const json = await res.json();
+              const items = json.conversations || [];
+
+              // Only consider post_call_transcription newer than the call start
+              const eligible = items.filter((c) => {
+                if (!c || c.webhook_type !== "post_call_transcription" || !c.timestamp) return false;
+                const ts = Date.parse(c.timestamp);
+                return !Number.isNaN(ts) && ts >= (startedAtMs + 5000);
+              });
+              eligible.sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+
+              const chosen = eligible[0];
+
+              if (chosen && chosen.conversation_id && chosen.conversation_id !== lastConversationId) {
+                console.log("Conversation end detected:", chosen);
+                lastConversationId = chosen.conversation_id;
+                clearInterval(autoEndPollingInterval);
+                autoEndPollingInterval = null;
+                // Close modal & reset timers, then immediately load transcript
+                onCallEnded("auto");
+                loadConversation(lastConversationId);
+              }
+            } catch (e) {
+              console.error("Auto-detection error:", e);
+            }
+          }
+
+          // Start checking after a short delay to allow call to establish
+          setTimeout(checkEnd, 3000);
+          autoEndPollingInterval = setInterval(checkEnd, 4000);
+        }
+
+        // Poll the backend for the latest conversation created after this call started
+        function pollForConversation() {
+          if (pollingInterval) clearInterval(pollingInterval);
+          const startedAtMs = callStartTime ? callStartTime.getTime() : 0;
+
+          async function check() {
+            try {
+              console.log("Polling for conversation...");
+              const res = await fetch(`${API_BASE_URL}/api/conversations`);
+              if (!res.ok) throw new Error(`HTTP ${res.status}`);
+              const json = await res.json();
+              const items = (json && Array.isArray(json.conversations)) ? json.conversations : [];
+
+              console.log("Available conversations:", items);
+
+              // 1) Prefer post_call_transcription newer than call start
+              const postTx = items.filter((c) => {
+                if (!c || c.webhook_type !== "post_call_transcription" || !c.timestamp) return false;
+                const ts = Date.parse(c.timestamp);
+                return !Number.isNaN(ts) && ts >= startedAtMs;
+              }).sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+
+              // 2) Fallback: any conversation newer than call start
+              const anyNewer = items.filter((c) => {
+                if (!c || !c.timestamp) return false;
+                const ts = Date.parse(c.timestamp);
+                return !Number.isNaN(ts) && ts >= startedAtMs;
+              }).sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+
+              // 3) Last resort: newest overall
+              const newestOverall = [...items].sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+
+              const chosen = (postTx[0] || anyNewer[0] || newestOverall[0]);
+
+              console.log("Chosen conversation:", chosen);
+
+              if (chosen && chosen.conversation_id && chosen.conversation_id !== lastConversationId) {
+                lastConversationId = chosen.conversation_id;
+                clearInterval(pollingInterval);
+                pollingInterval = null;
+                // Load via /messages endpoint
+                loadConversation(lastConversationId);
+              }
+            } catch (e) {
+              console.error("Polling error:", e);
+            }
+          }
+
+          // Start polling immediately, then every 3s for faster response
+          check();
+          pollingInterval = setInterval(check, 3000);
+        }
+
+        // Disconnect call
+        disconnectCallBtn.addEventListener("click", function () {
+          onCallEnded("manual");
+        });
+
+        // New call
+        newCallBtn.addEventListener("click", function () {
+          chatDashboard.style.display = "none";
+          document.querySelector(".form-section").style.display = "block"; // Show form
+          chatMessages.innerHTML = "";
+          if (ws) ws.close();
+          callSid = null;
+
+          // Stop call duration timer
+          if (callDurationInterval) {
+            clearInterval(callDurationInterval);
+            callDurationInterval = null;
+          }
+          if (callDurationEl) callDurationEl.textContent = "0:00";
+
+          // Stop any ongoing polling
+          if (pollingInterval) {
+            clearInterval(pollingInterval);
+            pollingInterval = null;
+          }
+          lastConversationId = null;
+          lastCustomerName = null;
+
+          // Reset form
+          document.getElementById("name").value = "";
+          document.getElementById("mobile").value = "";
+          document.getElementById("language").value = "";
+          document.getElementById("category").value = "";
+          mobileValidation.textContent = "";
+          mobileValidation.className = "mobile-validation";
+          updateStartButton();
+        });
+
+        // Start WebSocket for real-time transcript
+        function startWebSocket() {
+          console.log("WebSocket connection would be established here");
+        }
+
+        // Add message to chat
+        function addMessage(text, sender) {
+          const messageEl = document.createElement("div");
+          messageEl.classList.add("message");
+          if (sender) messageEl.classList.add(sender);
+
+          const iconClass = sender === "sender" ? "fa-user-tie" : "fa-headset";
+          const time = new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          messageEl.innerHTML = `
+                    <div class="message-icon">
+                        <i class="fas ${iconClass}"></i>
+                    </div>
+                    <div class="message-bubble">
+                        <div class="message-content">${text}</div>
+                        <div class="message-time">${time}</div>
+                    </div>
+                `;
+
+          // const bubbleEl = document.createElement('div');
+          // bubbleEl.classList.add('message-bubble');
+
+          chatMessages.appendChild(messageEl);
+
+          // Auto scroll to bottom
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      });
+    </script>
+  </body>
+</html>
