@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import ConnectingModal from '../components/ConnectingModal';
 import '../styles/modal.css';
 import '../styles/modal-status.css';
 import '../styles/live-status.css';
@@ -21,7 +22,7 @@ const ChatDashboard = () => {
   const [callDuration, setCallDuration] = useState('0:00');
   const [lastConversationId, setLastConversationId] = useState(null);
   const [isCallOngoing, setIsCallOngoing] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false); // No modal needed
+  const [isConnectingModalOpen, setIsConnectingModalOpen] = useState(true); // ConnectingModal open during call
   const [realTimeMessages, setRealTimeMessages] = useState([]);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [userSessionKey] = useState(() => `user_${formData?.mobile || Date.now()}_${callSid || Math.random()}`);
@@ -35,7 +36,7 @@ const ChatDashboard = () => {
   const callStatusPollingRef = useRef(null);
 
   // API Configuration
-  const API_BASE_URL = "https://virtualvaani.vgipl.com:8000";
+  const API_BASE_URL = "https://harold-unsalivated-loralee.ngrok-free.dev";
 
   // Helper to fetch JSON safely
   const fetchJson = async (url, options = {}) => {
@@ -158,38 +159,13 @@ const ChatDashboard = () => {
         
         if (eligibleConversations.length === 0) {
           console.log('No eligible conversations found for this user and time window');
-          // Show waiting message if no conversations found yet
-          if (messages.length <= 1) { // Only initial message
-            addMessage('Waiting for conversation to start...', 'receiver');
-          }
+          // Don't show any waiting messages
         }
         
         if (latest && latest.conversation_id && latest.conversation_id !== lastConversationId) {
-          console.log('Found new conversation:', latest.conversation_id);
+          console.log('Found conversation during call:', latest.conversation_id);
           setLastConversationId(latest.conversation_id);
-          
-          // Load messages in real-time during call
-          const data = await fetchJson(`${API_BASE_URL}/api/conversations/${latest.conversation_id}/messages?t=${Date.now()}`);
-          const transcript = Array.isArray(data?.messages) ? data.messages : [];
-          
-          // Clear and reload messages
-          setMessages([]);
-          displayedMessageIds.current.clear();
-          
-          transcript.forEach((msg, index) => {
-            if (msg && typeof msg.message === "string") {
-              const role = (msg.role || "").toLowerCase();
-              const messageId = `${latest.conversation_id}-${index}`;
-              addMessage(
-                msg.message,
-                role === "agent" ? "receiver" : "sender",
-                messageId
-              );
-            }
-          });
-          
-          // Load summary in real-time
-          fetchAndRenderSummary(latest.conversation_id);
+          // Don't load messages during call - only store conversation ID
         }
       } catch (e) {
         console.error("Real-time polling error:", e);
@@ -199,49 +175,54 @@ const ChatDashboard = () => {
     realTimePollingRef.current = setInterval(checkMessages, 5000);
   };
 
-  // Monitor call status to auto-close modal when call ends
+  // Monitor for conversation and auto-end call when found
   const monitorCallStatus = () => {
     if (callStatusPollingRef.current) {
       clearInterval(callStatusPollingRef.current);
     }
 
-    const checkCallStatus = async () => {
+    const startedAtMs = callStartTime ? new Date(callStartTime).getTime() : Date.now();
+
+    const checkForConversation = async () => {
       try {
-        // Check if call is still active by looking for new messages
         let json, items;
         try {
           json = await fetchJson(`${API_BASE_URL}/api/conversations?t=${Date.now()}`);
           items = json.conversations || [];
         } catch (fetchError) {
-          console.warn('API unavailable for status check');
+          console.warn('API unavailable for conversation check');
           return;
         }
         
-        if (items.length > 0 && lastConversationId) {
-          const currentConv = items.find(c => c.conversation_id === lastConversationId);
-          if (currentConv) {
-            // Check if conversation has ended (no new messages for 30 seconds)
-            const lastUpdate = Date.parse(currentConv.timestamp);
-            const timeSinceUpdate = Date.now() - lastUpdate;
-            
-            if (timeSinceUpdate > 30000) { // 30 seconds without update
-              // Call likely ended
-              handleCallEnd();
-            }
-          }
+        // Look for conversations that match our call time
+        const eligibleConversations = items.filter((c) => {
+          if (!c || !c.timestamp) return false;
+          const ts = Date.parse(c.timestamp);
+          const timeDiff = Math.abs(ts - startedAtMs);
+          return !Number.isNaN(ts) && ts >= startedAtMs && timeDiff <= 600000; // 10 minutes window
+        }).sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+        
+        // If we found a conversation, the call has ended
+        if (eligibleConversations.length > 0) {
+          const conversation = eligibleConversations[0];
+          console.log('Conversation detected - call ended automatically:', conversation.conversation_id);
+          setLastConversationId(conversation.conversation_id);
+          handleCallEnd();
         }
+        
       } catch (e) {
-        console.error("Call status monitoring error:", e);
+        console.error("Conversation monitoring error:", e);
       }
     };
 
-    callStatusPollingRef.current = setInterval(checkCallStatus, 10000); // Check every 10 seconds
+    callStatusPollingRef.current = setInterval(checkForConversation, 5000); // Check every 5 seconds
   };
 
   // Handle call end
   const handleCallEnd = () => {
     callEndTimeRef.current = new Date();
     setIsCallOngoing(false);
+    setIsConnectingModalOpen(false); // Close ConnectingModal when call ends
     
     // Stop call duration timer
     if (callDurationIntervalRef.current) {
@@ -260,62 +241,85 @@ const ChatDashboard = () => {
       callStatusPollingRef.current = null;
     }
     
-    // Add call end message
-    const nameForMsg = lastCustomerName || "User";
-    addMessage(`${nameForMsg} cut the call.`, "sender");
+    // Clear messages and load complete conversation
+    setMessages([]);
+    displayedMessageIds.current.clear();
     
-    // Load final conversation immediately
+    // Load complete conversation after call ends
     if (lastConversationId) {
-      loadConversation(lastConversationId);
+      setTimeout(() => {
+        loadCompleteConversation(lastConversationId);
+      }, 1000);
+    } else {
+      // Try to find conversation one more time
+      setTimeout(() => {
+        findAndLoadConversation();
+      }, 2000);
     }
   };
 
   // No modal needed
 
-  // Load conversation by ID from backend API
-  const loadConversation = async (conversationId) => {
+  // Load complete conversation after call ends
+  const loadCompleteConversation = async (conversationId) => {
     try {
-      console.log(`Loading conversation: ${conversationId}`);
-      
-      // Clear existing messages
-      setMessages([]);
-      
-      // Only handle real API conversations
+      console.log(`Loading complete conversation: ${conversationId}`);
       
       // Fetch and render summary
       await fetchAndRenderSummary(conversationId);
       
-      // Use the messages endpoint that returns { status, conversation_id, messages: [{role, message}] }
+      // Use the messages endpoint
       const data = await fetchJson(`${API_BASE_URL}/api/conversations/${conversationId}/messages?t=${Date.now()}`);
 
-      console.log("Conversation data received:", data);
+      console.log("Complete conversation data received:", data);
 
       const transcript = Array.isArray(data?.messages) ? data.messages : [];
       if (!transcript.length) {
-        const nameForMsg = lastCustomerName || "User";
-        addMessage(`${nameForMsg} did not receive the call.`, "receiver");
+        addMessage("No conversation messages found.", "receiver");
         return;
       }
 
-      // Try to populate sidebar account info from transcript
-      updateAccountInfoFromMessages(transcript);
-
-      // Display messages with a slight delay for better UX
+      // Display all messages immediately after call ends
       transcript.forEach((msg, index) => {
         if (!msg || typeof msg.message !== "string") return;
         const role = (msg.role || "").toLowerCase();
-        setTimeout(() => {
-          addMessage(
-            msg.message,
-            role === "agent" ? "receiver" : "sender"
-          );
-        }, (index + 1) * 500);
+        const messageId = `${conversationId}-${index}`;
+        addMessage(
+          msg.message,
+          role === "agent" ? "receiver" : "sender",
+          messageId
+        );
       });
       
-      // Don't add call end message here - it's handled by handleCallEnd
     } catch (err) {
-      console.error("Error loading conversation messages by ID:", err);
+      console.error("Error loading complete conversation:", err);
       addMessage("Could not load conversation messages.", "receiver");
+    }
+  };
+  
+  // Find and load conversation when call ends
+  const findAndLoadConversation = async () => {
+    try {
+      const startedAtMs = callStartTime ? new Date(callStartTime).getTime() : Date.now() - 600000;
+      const json = await fetchJson(`${API_BASE_URL}/api/conversations?t=${Date.now()}`);
+      const items = json.conversations || [];
+      
+      const eligible = items.filter((c) => {
+        if (!c || !c.timestamp) return false;
+        const ts = Date.parse(c.timestamp);
+        return !Number.isNaN(ts) && ts >= startedAtMs;
+      }).sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
+      
+      const chosen = eligible[0];
+      if (chosen && chosen.conversation_id) {
+        setLastConversationId(chosen.conversation_id);
+        loadCompleteConversation(chosen.conversation_id);
+      } else {
+        addMessage("No conversation found for this call.", "receiver");
+      }
+    } catch (err) {
+      console.error("Error finding conversation:", err);
+      addMessage("Could not find conversation.", "receiver");
     }
   };
 
@@ -368,6 +372,42 @@ const ChatDashboard = () => {
       console.log('Extracted account info:', { accountNumber, balance });
     } catch (e) {
       console.warn('Could not parse account info from transcript:', e);
+    }
+  };
+
+  // Load conversation messages
+  const loadConversation = async (conversationId) => {
+    
+    try {
+      console.log(`Loading conversation: ${conversationId}`);
+      
+      const data = await fetchJson(`${API_BASE_URL}/api/conversations/${conversationId}/messages?t=${Date.now()}`);
+      console.log("Conversation data received:", data);
+
+      const transcript = Array.isArray(data?.messages) ? data.messages : [];
+      if (!transcript.length) {
+        console.log("No messages found in conversation");
+        return;
+      }
+
+      // Clear existing messages and add new ones
+      setMessages([]);
+      displayedMessageIds.current.clear();
+      
+      // Display all messages
+      transcript.forEach((msg, index) => {
+        if (!msg || typeof msg.message !== "string") return;
+        const role = (msg.role || "").toLowerCase();
+        const messageId = `${conversationId}-${index}`;
+        addMessage(
+          msg.message,
+          role === "agent" ? "receiver" : "sender",
+          messageId
+        );
+      });
+      
+    } catch (err) {
+      console.error("Error loading conversation:", err);
     }
   };
 
@@ -501,18 +541,22 @@ const ChatDashboard = () => {
     // Start call duration timer
     callDurationIntervalRef.current = setInterval(updateCallDuration, 1000);
 
-    // Add initial connection message
-    setTimeout(() => {
-      addMessage(`Call initiated to ${formData.name}. Please wait...`, "receiver");
-    }, 500);
+    // Don't show any messages during call
     
     // Wait for real API conversation only
     
-    // Start conversation ID detection after initial delay
+    // Start call monitoring after initial delay
     setTimeout(() => {
-      pollRealTimeMessages();
       monitorCallStatus();
     }, 2000);
+    
+    // Add manual call end button handler
+    const handleManualCallEnd = () => {
+      handleCallEnd();
+    };
+    
+    // Store reference for cleanup
+    window.handleManualCallEnd = handleManualCallEnd;
 
     // Clean up on unmount
     return () => {
@@ -563,6 +607,13 @@ const ChatDashboard = () => {
 
   return (
     <div className="container">
+      {/* ConnectingModal during call */}
+      <ConnectingModal 
+        isOpen={isConnectingModalOpen && isCallOngoing}
+        onClose={handleCallEnd}
+        formData={formData}
+      />
+      
       <div className="chat-dashboard" id="chat-dashboard" style={{ display: 'flex' }}>
         <div className="chat-header">
           <img
@@ -572,20 +623,14 @@ const ChatDashboard = () => {
           <div className="chat-header-info">
             <h3 id="chat-agent-name">{agentDisplayName} {languageDisplayName && `(${languageDisplayName})`}</h3>
             <p id="chat-status">
-              {isCallOngoing ? (
-                <span>
-                  <span className="status-live">🔴 LIVE</span> Connected to {formData.name} | Duration: {callDuration}
-                </span>
-              ) : (
-                `Call ended with ${formData.name}`
-              )}
+              Connected to {formData.name}
             </p>
           </div>
         </div>
 
         <div className="chat-content">
           <div className="chat-messages" id="chat-messages" ref={chatMessagesRef}>
-            {messages.map(message => (
+            {!isCallOngoing && messages.map(message => (
               <div key={message.id} className={`message ${message.sender}`}>
                 <div className="message-icon">
                   <i className={`fas ${message.sender === 'sender' ? 'fa-user-tie' : 'fa-headset'}`}></i>
@@ -621,19 +666,11 @@ const ChatDashboard = () => {
         </div>
 
         <div className="chat-footer">
-          {isCallOngoing ? (
-            <button className="btn-disconnect" onClick={handleCallEnd}>
-              <i className="fas fa-phone-slash"></i> End Call
-            </button>
-          ) : (
-            <button className="btn-new-call" id="new-call" onClick={handleNewCall}>
-              <i className="fas fa-phone"></i> New Call
-            </button>
-          )}
+          <button className="btn-new-call" id="new-call" onClick={handleNewCall}>
+            <i className="fas fa-phone"></i> New Call
+          </button>
         </div>
       </div>
-
-
     </div>
   );
 };

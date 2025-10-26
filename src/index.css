@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Custom styles */
+@layer utilities {
+  .bg-radial-gradient {
+    background: radial-gradient(ellipse at center, rgba(102,126,234,0.15) 0%, rgba(118,75,162,0.1) 30%, transparent 70%);
+  }
+}

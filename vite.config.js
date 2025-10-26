@@ -1,18 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-  // Add this css block to prevent Vite from searching for external PostCSS config files
-  css: {
-    postcss: {}
-  },
+  plugins: [react(), tailwindcss()],
   server: {
     host: true,
     proxy: {
       '/api': {
-        target: 'https://virtualvaani.vgipl.com:8000',
+        target: 'https://harold-unsalivated-loralee.ngrok-free.dev/',
         changeOrigin: true,
         secure: true,
         rewrite: (path) => path.replace(/^\/api/, '/api')

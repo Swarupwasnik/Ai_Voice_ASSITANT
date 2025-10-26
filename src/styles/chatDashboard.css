@@ -550,3 +550,19 @@
     max-width: 95%;
   }
 }
+/* Call waiting message */
+.call-waiting {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+  padding: 40px 20px;
+}
+
+.call-waiting p {
+  font-size: 16px;
+  margin: 0;
+}

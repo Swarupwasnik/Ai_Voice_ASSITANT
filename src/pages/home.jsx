@@ -30,7 +30,7 @@ const Home = () => {
   // API Configuration
   const INDIAN_PHONE_NUMBER_ID = "phnum_6401k7kw1kysfpzaggkpdf6g0tfy";
   const INTERNATIONAL_PHONE_NUMBER_ID = "phnum_2601k7rwa4hmfvq9dqntgqntky4n";
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://virtualvaani.vgipl.com:8000";
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://harold-unsalivated-loralee.ngrok-free.dev/";
 
   // Your original agent map
   const agentMap = {
