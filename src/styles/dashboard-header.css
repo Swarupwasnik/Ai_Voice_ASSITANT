@@ -1,0 +1,112 @@
+/* Dashboard Header Styles */
+.dashboard-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-bottom: 1px solid #e0e0e0;
+  position: relative;
+  height: 70px;
+  width: 100%;
+  z-index: 100;
+}
+
+.dashboard-header .header-content {
+  max-width: none;
+  width: 100%;
+  padding: 0 2rem;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-header .nav-menu {
+  display: flex;
+  gap: 1rem;
+}
+
+.dashboard-header .nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.dashboard-header .nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dashboard-header .user-info {
+  color: white;
+  font-weight: 500;
+}
+
+.dashboard-header .user-name {
+  font-size: 0.9rem;
+}
+
+.dashboard-header .btn-logout {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dashboard-header .btn-logout:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.dashboard-header .btn-logout i {
+  font-size: 0.9rem;
+}
+
+.dashboard-header .btn-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Override original header styles */
+.dashboard-header.main-header {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+.dashboard-header .header-content {
+  width: 100% !important;
+  max-width: none !important;
+}
+
+/* Mobile responsiveness for dashboard header */
+@media (max-width: 768px) {
+  .dashboard-header {
+    width: 100% !important;
+  }
+  
+  .dashboard-header .header-content {
+    padding: 0 1rem;
+  }
+  
+  .dashboard-header .nav-menu {
+    display: none;
+  }
+  
+  .dashboard-header .user-info {
+    display: none;
+  }
+  
+  .dashboard-header .btn-logout .btn-text {
+    display: none;
+  }
+}

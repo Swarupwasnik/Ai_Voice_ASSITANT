@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import "../styles/login.css"
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   
   const [formData, setFormData] = useState({
     email: '',
@@ -45,13 +47,14 @@ const Login = () => {
     // Simulate login process
     setTimeout(() => {
       setIsLoading(false);
-      // Store user session
-      localStorage.setItem('user', JSON.stringify({
+      // Login user through context
+      const userData = {
         name: 'Demo User',
         email: formData.email,
         role: 'admin'
-      }));
-      navigate('/');
+      };
+      login(userData);
+      navigate('/dashboard');
     }, 1500);
   };
 

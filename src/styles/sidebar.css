@@ -1,0 +1,126 @@
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100vh;
+  width: 250px;
+  background: #2c3e50;
+  color: white;
+  transition: width 0.3s ease;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+}
+
+.sidebar-header {
+  padding: 1rem;
+  border-bottom: 1px solid #34495e;
+}
+
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  width: 100%;
+  text-align: right;
+  padding: 0.5rem;
+}
+
+.sidebar-toggle:hover {
+  color: #3498db;
+}
+
+.sidebar-nav {
+  padding: 1rem 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-item:hover {
+  background: #34495e;
+  border-left-color: #3498db;
+}
+
+.sidebar-item.active {
+  background: #34495e;
+  border-left-color: #3498db;
+  color: #3498db;
+}
+
+.sidebar-item i {
+  font-size: 1.2rem;
+  width: 20px;
+  text-align: center;
+  margin-right: 1rem;
+}
+
+.sidebar.collapsed .sidebar-item i {
+  margin-right: 0;
+}
+
+.sidebar-label {
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.sidebar.collapsed .sidebar-label {
+  display: none;
+}
+
+/* Dashboard main area adjustment */
+.dashboard-main {
+  margin-left: 250px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-main.collapsed {
+  margin-left: 60px;
+}
+
+.dashboard-main .main-content {
+  flex: 1;
+  padding-top: 0;
+  min-height: calc(100vh - 140px);
+}
+
+/* Dashboard layout */
+.dashboard-layout {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+  
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  
+  .dashboard-main {
+    margin-left: 0;
+  }
+}
