@@ -91,16 +91,21 @@
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s ease;
+  width: calc(100vw - 250px);
+  box-sizing: border-box;
 }
 
 .dashboard-main.collapsed {
   margin-left: 60px;
+  width: calc(100vw - 60px);
 }
 
 .dashboard-main .main-content {
   flex: 1;
   padding-top: 0;
   min-height: calc(100vh - 140px);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Dashboard layout */
@@ -121,6 +126,12 @@
   }
   
   .dashboard-main {
-    margin-left: 0;
+    margin-left: 0 !important;
+    width: 100vw !important;
+  }
+  
+  .dashboard-main.collapsed {
+    margin-left: 0 !important;
+    width: 100vw !important;
   }
 }
